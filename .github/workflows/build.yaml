@@ -18,8 +18,6 @@ jobs:
           shell: msys2 {0}
 
     steps:
-      - uses: actions/checkout@v3
-
       - name: Prepare
         uses: msys2/setup-msys2@v2
         with:
@@ -36,13 +34,14 @@ jobs:
             mingw-w64-x86_64-poppler
             mingw-w64-x86_64-poppler-data
 
-      - name: Rust toolchain
+      - name: Rustup
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
-        run: 
-          rustup update stable-gnu && rustup default stable-gnu
+
+      - name: Rust toolchain
+        run: rustup update stable-gnu && rustup default stable-gnu
 
       - name: Fetch rnote
         run: |
