@@ -25,14 +25,11 @@ jobs:
           update: ture 
           install: >-
             git
-            mingw-w64-x86_64-pkgconf
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-desktop-file-utils
-            mingw-w64-x86_64-appstream-glib
-            mingw-w64-x86_64-gtk4
-            mingw-w64-x86_64-libadwaita
-            mingw-w64-x86_64-poppler
-            mingw-w64-x86_64-poppler-data
+
+      - name: Fetch rnote
+        run: |
+          git clone https://github.com/flxzt/rnote --depth=1 && cd rnote
+          git submodule update --init --recursive
 
       - name: Rust toolchain
         uses: actions-rs/toolchain@v1
@@ -42,11 +39,6 @@ jobs:
           default: true
           override: true
 
-      - name: Fetch rnote
-        run: |
-          git clone https://github.com/flxzt/rnote --depth=1
-          git submodule update --init --recursive
-          
       - name: Setup Meson
         run: meson setup --prefix=${{ env.INSTALL_PATH }} _mesonbuild
 
