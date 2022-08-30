@@ -3,6 +3,7 @@ on: push
 
 env: # shared paths for all builds, ref with: env.NAME
   CARGO_TERM_COLOR: always
+  RNOTE_PATH: ${{ github.workspace }}/rnote
   INSTALL_PATH: ${{ github.workspace }}/install
   BIN_PATH: ${{ github.workspace }}/install/bin
 
@@ -35,11 +36,6 @@ jobs:
             mingw-w64-x86_64-poppler-data
             mingw-w64-x86_64-meson
 
-      - name: Fetch rnote
-        run: |
-          git clone https://github.com/flxzt/rnote --depth=1 && cd rnote
-          git submodule update --init --recursive
-
       - name: Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -48,18 +44,21 @@ jobs:
           default: true
           override: true
 
-      - name: Setup Meson
-        run: meson setup --prefix=${{ env.INSTALL_PATH }} _mesonbuild
+      - name: Fetch rnote
+        run: |
+          git clone https://github.com/flxzt/rnote --depth=1 && cd rnote
+          git submodule update --init --recursive
 
-      - name: Meson Compile
-        run: meson compile -C _mesonbuild
-
-      - name: Install
-        run: meson install -C _mesonbuild
+      - name: Build && Install
+        run: |
+          cd "$env:RNOTE_PATH"
+          meson setup --prefix="$env:INSTALL_PATH" _mesonbuild
+          meson compile -C _mesonbuild
+          meson install -C _mesonbuild
 
 
       # finish build and upload artifact
       - uses: actions/upload-artifact@v3
         with:
-          name: gtk-msvc-release
+          name: rnote-x86_64-pc-windows-gnu
           path: ${{ env.BIN_PATH }}
