@@ -1,0 +1,63 @@
+name: Build
+on: push
+
+env: # shared paths for all builds, ref with: env.NAME
+  CARGO_TERM_COLOR: always
+  INSTALL_PATH: ${{ github.workspace }}/install
+  BIN_PATH: ${{ github.workspace }}/install/bin
+
+jobs:
+  build:
+    name: Build rnote
+
+    runs-on: windows-latest
+
+    # defaul msys2 shell
+    defaults:
+        run:
+          shell: msys2 {0}
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: rustup update stable-gnu && rustup default stable-gnu
+
+
+      - name: Prepare
+        uses: msys2/setup-msys2@v2
+        with:
+          architecture: x64
+          update: ture 
+          install: >-
+            git
+            mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-desktop-file-utils
+            mingw-w64-x86_64-appstream-glib
+            mingw-w64-x86_64-gtk4
+            mingw-w64-x86_64-libadwaita
+            mingw-w64-x86_64-poppler
+            mingw-w64-x86_64-poppler-data
+
+      # - name: Setup Meson
+      #   run: pip install meson ninja
+
+      - name: Fetch rnote
+        run: |
+          git clone https://github.com/flxzt/rnote --depth=1
+          git submodule update --init --recursive
+          
+      - name: Setup Meson
+        run: meson setup --prefix=${{ env.INSTALL_PATH }} _mesonbuild
+
+      - name: Meson Compile
+        run: meson compile -C _mesonbuild
+
+      - name: Install
+        run: meson install -C _mesonbuild
+
+
+      # finish build and upload artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: gtk-msvc-release
+          path: ${{ env.BIN_PATH }}
