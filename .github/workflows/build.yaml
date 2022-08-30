@@ -3,7 +3,7 @@ on: push
 
 env: # shared paths for all builds, ref with: env.NAME
   CARGO_TERM_COLOR: always
-  RNOTE_PATH: ${{ github.workspace }}/rnote
+  RNOTE_PATH: /d/a/rnote-build/rnote-build/rnote
   INSTALL_PATH: ${{ github.workspace }}/install
   BIN_PATH: ${{ github.workspace }}/install/bin
 
