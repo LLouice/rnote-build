@@ -34,14 +34,13 @@ jobs:
             mingw-w64-x86_64-poppler
             mingw-w64-x86_64-poppler-data
 
-      - name: Rustup
+      - name: Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+          target: x86_64-pc-windows-gnu
+          default: true
           override: true
-
-      - name: Rust toolchain
-        run: rustup update stable-gnu && rustup default stable-gnu
 
       - name: Fetch rnote
         run: |
