@@ -25,6 +25,15 @@ jobs:
           update: ture 
           install: >-
             git
+            mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-desktop-file-utils
+            mingw-w64-x86_64-appstream-glib
+            mingw-w64-x86_64-gtk4
+            mingw-w64-x86_64-libadwaita
+            mingw-w64-x86_64-poppler
+            mingw-w64-x86_64-poppler-data
+            mingw-w64-x86_64-meson
 
       - name: Fetch rnote
         run: |
