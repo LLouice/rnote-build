@@ -35,14 +35,14 @@ jobs:
             mingw-w64-x86_64-libadwaita
             mingw-w64-x86_64-poppler
             mingw-w64-x86_64-poppler-data
-            mingw-w64-x86_64-rust
 
       - name: Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
         run: 
           rustup update stable-gnu && rustup default stable-gnu
-
-      # - name: Setup Meson
-      #   run: pip install meson ninja
 
       - name: Fetch rnote
         run: |
