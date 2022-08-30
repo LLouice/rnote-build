@@ -35,11 +35,10 @@ jobs:
             mingw-w64-x86_64-libadwaita
             mingw-w64-x86_64-poppler
             mingw-w64-x86_64-poppler-data
-            curl
+            mingw-w64-x86_64-rust
 
-      - name: Rustup
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+      - name: Rust toolchain
+        run: 
           rustup update stable-gnu && rustup default stable-gnu
 
       # - name: Setup Meson
