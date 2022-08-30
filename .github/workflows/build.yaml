@@ -35,10 +35,12 @@ jobs:
             mingw-w64-x86_64-libadwaita
             mingw-w64-x86_64-poppler
             mingw-w64-x86_64-poppler-data
-            rustup
+            curl
 
       - name: Rustup
-        run: rustup update stable-gnu && rustup default stable-gnu
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          rustup update stable-gnu && rustup default stable-gnu
 
       # - name: Setup Meson
       #   run: pip install meson ninja
