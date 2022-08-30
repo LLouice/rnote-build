@@ -40,9 +40,15 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: x86_64-pc-windows-gnu
           default: true
           override: true
+
+      - name: Rust target
+        run: |
+          export PATH=$PATH:/c/Users/runneradmin/.cargo/bin
+          rustup toolchain install stable-gnu
+          rustup default stable-gnu
+
 
       - name: Fetch rnote
         run: |
@@ -52,6 +58,7 @@ jobs:
 
       - name: Build && Install
         run: |
+          export PATH=$PATH:/c/Users/runneradmin/.cargo/bin
           cd ${{ env.RNOTE_PATH }}
           meson setup --prefix=${{ env.INSTALL_PATH }} _mesonbuild
           meson compile -C _mesonbuild
