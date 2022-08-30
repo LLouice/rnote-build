@@ -19,8 +19,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: rustup update stable-gnu && rustup default stable-gnu
-
 
       - name: Prepare
         uses: msys2/setup-msys2@v2
@@ -37,6 +35,10 @@ jobs:
             mingw-w64-x86_64-libadwaita
             mingw-w64-x86_64-poppler
             mingw-w64-x86_64-poppler-data
+            rustup
+
+      - name: Rustup
+        run: rustup update stable-gnu && rustup default stable-gnu
 
       # - name: Setup Meson
       #   run: pip install meson ninja
